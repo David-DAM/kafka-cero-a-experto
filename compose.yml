@@ -50,6 +50,29 @@ services:
       timeout: 10s
       retries: 5
 
+  schema-registry:
+    image: confluentinc/cp-schema-registry:5.4.0
+    hostname: schema-registry
+    networks:
+      - kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "8081" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+
+
 networks:
   kafka:
     driver: bridge
