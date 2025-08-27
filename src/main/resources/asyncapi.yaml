@@ -1,0 +1,61 @@
+asyncapi: '2.6.0'
+info:
+  title: User Events API
+  version: '1.0.0'
+  description: >
+    API asíncrona para eventos de usuario. Este documento describe el evento `UserCreatedEvent`
+    publicado en Kafka cuando se crea un nuevo usuario.
+
+servers:
+  kafkaServer:
+    url: localhost:9092
+    protocol: kafka
+
+defaultContentType: application/avro
+
+channels:
+  user.events:
+    description: Topic que contiene todos los eventos relacionados con usuarios.
+    subscribe:
+      message:
+        oneOf:
+          - $ref: '#/components/messages/UserCreatedEventMessage'
+
+components:
+  messages:
+    UserCreatedEventMessage:
+      name: UserCreatedEvent
+      title: Evento de usuario creado
+      summary: Creado un nuevo usuario.
+      contentType: application/avro
+      payload:
+        $ref: '#/components/schemas/UserCreatedEvent'
+
+  schemas:
+    UserCreatedEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          examples:
+            - 1
+        firstname:
+          type: string
+          examples:
+            - David
+        lastname:
+          type: string
+          examples:
+            - Jimenez
+        email:
+          type: string
+          examples:
+            - support@davinchicoder.dev
+        role:
+          type: string
+          examples:
+            - USER
+        timestamp:
+          type: string
+          examples:
+            - 1756115

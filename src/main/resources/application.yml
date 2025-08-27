@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: kafka-cero-a-experto
+
+
+app:
+  kafka:
+    bootstrap-servers: localhost:9092
+    group-id: spring-service-group
+    topics:
+      user: user.events
+      user.validation: user.validation.events
+    schema-registry-url: http://localhost:8081
