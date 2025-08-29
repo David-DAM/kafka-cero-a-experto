@@ -1,4 +1,4 @@
-package com.davinchicoder.kafka_cero_a_experto.common.infrastructure;
+package com.davinchicoder.kafka_cero_a_experto.common.infrastructure.config;
 
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
@@ -20,7 +20,7 @@ public class KafkaProducerConfig {
 
     @Value("${app.kafka.bootstrap-servers}")
     private String BOOTSTRAP_SERVERS_CONFIG;
-    
+
     @Value("${app.kafka.schema-registry-url}")
     private String SCHEMA_REGISTRY_URL_CONFIG;
 

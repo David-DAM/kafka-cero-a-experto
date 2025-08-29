@@ -1,4 +1,4 @@
-package com.davinchicoder.kafka_cero_a_experto.common.infrastructure;
+package com.davinchicoder.kafka_cero_a_experto.common.infrastructure.config;
 
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;

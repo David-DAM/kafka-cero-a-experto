@@ -16,7 +16,7 @@ public class UserKafkaEventConsumer implements Consumer<Message<GenericRecord>> 
     @Override
     public void accept(Message<GenericRecord> genericRecordMessage) {
 
-        log.info("Kafka Event message: {}", genericRecordMessage);
+        log.info("Kafka Event message: {}", genericRecordMessage.toString());
 
     }
 }
