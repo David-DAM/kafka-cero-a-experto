@@ -54,7 +54,7 @@ public class UserKafkaEventConsumer implements Consumer<Message<GenericRecord>> 
         if (specificConsumer != null) {
             log.info("Found consumer for schema: {}", schemaFullName);
             Message<SpecificRecord> specificRecordMessage = messagingUtil.buildMessage(
-                    specificRecord, genericRecordMessage.getHeaders()
+                    (SpecificRecord) genericRecordMessage.getPayload(), genericRecordMessage.getHeaders()
             );
 
             specificConsumer.accept(specificRecordMessage);
