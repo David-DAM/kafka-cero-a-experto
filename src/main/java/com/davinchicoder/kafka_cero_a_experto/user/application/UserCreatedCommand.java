@@ -2,7 +2,7 @@ package com.davinchicoder.kafka_cero_a_experto.user.application;
 
 import com.davinchicoder.kafka_cero_a_experto.common.application.Command;
 import com.davinchicoder.kafka_cero_a_experto.common.application.VoidResponse;
-import com.davinchicoder.kafka_cero_a_experto.user.domain.Role;
+import com.davinchicoder.kafka_cero_a_experto.user.domain.entity.Role;
 import lombok.Data;
 
 import java.time.Instant;
