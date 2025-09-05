@@ -5,8 +5,12 @@ import com.davinchicoder.kafka_cero_a_experto.common.infrastructure.event.util.M
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.messaging.Message;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,7 +36,7 @@ public class UserKafkaEventConsumer implements Consumer<Message<GenericRecord>> 
         this.messagingUtil = messagingUtil;
     }
 
-
+    @RetryableTopic(attempts = "4", exclude = {NullPointerException.class}, backoff = @Backoff(delay = 3000, multiplier = 1.5, maxDelay = 15000))
     @KafkaListener(topics = "${app.kafka.topics.user}", groupId = "${app.kafka.group-id}", containerFactory = "kafkaListenerContainerFactory")
     @Override
     public void accept(Message<GenericRecord> genericRecordMessage) {
@@ -40,7 +44,7 @@ public class UserKafkaEventConsumer implements Consumer<Message<GenericRecord>> 
         log.info("Kafka Event message: {}", genericRecordMessage.toString());
 
         SpecificRecord specificRecord;
-
+        
         try {
             specificRecord = messagingUtil.getSpecificRecord(genericRecordMessage.getPayload());
         } catch (Exception e) {
@@ -61,6 +65,14 @@ public class UserKafkaEventConsumer implements Consumer<Message<GenericRecord>> 
         } else {
             log.warn("No consumer found for schema: {}", schemaFullName);
         }
+
+    }
+
+    @DltHandler
+    public void listenDLT(ConsumerRecord<String, GenericRecord> genericRecord) {
+        GenericRecord record = genericRecord.value();
+
+        log.info("DLT Received: {}, topic {}, offset {}", record.toString(), genericRecord.topic(), genericRecord.offset());
 
     }
 }
