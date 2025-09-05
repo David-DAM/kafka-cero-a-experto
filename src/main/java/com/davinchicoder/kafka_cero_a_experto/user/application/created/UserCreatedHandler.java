@@ -1,4 +1,4 @@
-package com.davinchicoder.kafka_cero_a_experto.user.application;
+package com.davinchicoder.kafka_cero_a_experto.user.application.created;
 
 import com.davinchicoder.kafka_cero_a_experto.common.application.CommandHandler;
 import com.davinchicoder.kafka_cero_a_experto.common.application.VoidResponse;
