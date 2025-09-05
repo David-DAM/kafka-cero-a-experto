@@ -1,4 +1,4 @@
-package com.davinchicoder.kafka_cero_a_experto.user.infrastructure.event;
+package com.davinchicoder.kafka_cero_a_experto.user.infrastructure.event.consumer;
 
 import com.davinchicoder.kafka_cero_a_experto.common.infrastructure.event.consumer.EventSpecificConsumer;
 import com.davinchicoder.kafka_cero_a_experto.common.infrastructure.event.util.MessagingUtil;

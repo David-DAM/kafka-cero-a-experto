@@ -3,6 +3,8 @@ package com.davinchicoder.kafka_cero_a_experto.user.application.created;
 import com.davinchicoder.kafka_cero_a_experto.common.application.CommandHandler;
 import com.davinchicoder.kafka_cero_a_experto.common.application.VoidResponse;
 import com.davinchicoder.kafka_cero_a_experto.user.domain.entity.User;
+import com.davinchicoder.kafka_cero_a_experto.user.domain.event.UserVerificationRequestedDomainEvent;
+import com.davinchicoder.kafka_cero_a_experto.user.domain.port.UserEvent;
 import com.davinchicoder.kafka_cero_a_experto.user.domain.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Component;
 public class UserCreatedHandler implements CommandHandler<UserCreatedCommand, VoidResponse> {
 
     private final UserRepository userRepository;
+
+    private final UserEvent userEvent;
 
     @Override
     public VoidResponse handle(UserCreatedCommand command) {
@@ -33,6 +37,10 @@ public class UserCreatedHandler implements CommandHandler<UserCreatedCommand, Vo
                 .build();
 
         userRepository.save(user);
+
+        UserVerificationRequestedDomainEvent domainEvent = UserVerificationRequestedDomainEvent.of(user);
+
+        userEvent.sendUserVerificationRequestedDomainEvent(domainEvent);
 
         return new VoidResponse();
     }

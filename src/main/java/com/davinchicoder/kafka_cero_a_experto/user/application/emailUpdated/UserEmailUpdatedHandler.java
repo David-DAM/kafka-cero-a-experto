@@ -2,6 +2,8 @@ package com.davinchicoder.kafka_cero_a_experto.user.application.emailUpdated;
 
 import com.davinchicoder.kafka_cero_a_experto.common.application.CommandHandler;
 import com.davinchicoder.kafka_cero_a_experto.common.application.VoidResponse;
+import com.davinchicoder.kafka_cero_a_experto.user.domain.event.UserVerificationRequestedDomainEvent;
+import com.davinchicoder.kafka_cero_a_experto.user.domain.port.UserEvent;
 import com.davinchicoder.kafka_cero_a_experto.user.domain.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,8 @@ public class UserEmailUpdatedHandler implements CommandHandler<UserEmailUpdatedC
 
     private final UserRepository userRepository;
 
+    private final UserEvent userEvent;
+
     @Override
     public VoidResponse handle(UserEmailUpdatedCommand command) {
         log.info("UserEmailUpdatedHandler command: {}", command);
@@ -23,6 +27,9 @@ public class UserEmailUpdatedHandler implements CommandHandler<UserEmailUpdatedC
             user.setUpdatedAt(command.getTimestamp());
             log.debug("User email updated for user: {}", user);
             userRepository.save(user);
+
+            UserVerificationRequestedDomainEvent domainEvent = UserVerificationRequestedDomainEvent.of(user);
+            userEvent.sendUserVerificationRequestedDomainEvent(domainEvent);
         });
 
         return new VoidResponse();
